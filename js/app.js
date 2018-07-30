@@ -1,8 +1,8 @@
 let start;
-let wf;
 const cities = ["Lviv", "Kyiv", "London", "New York"];
 const temperatures = ["C", "F"];
 const apiKey = "5140914bfb0847d1752cd225b5311a51";
+const units = ["metric", "imperial"];
 
 function Form(arrCity, arrTemp) {
 	let newForm;
@@ -13,7 +13,7 @@ function Form(arrCity, arrTemp) {
 	let dataList;
 
 	newSelect = document.createElement("select");
-	newSelect.setAttribute("onmouseup", "loadData(this.value)");
+	newSelect.setAttribute("onchange", "loadData(this.value)");
 
 	for(let index in arrCity) {
 		newOption = document.createElement("option");
@@ -30,6 +30,7 @@ function Form(arrCity, arrTemp) {
 	inputRange.setAttribute("id", "formSlider");
 	inputRange.setAttribute("type", "range");
 	inputRange.setAttribute("list", "tempList");
+	inputRange.setAttribute("onchange", "changeTemperature(this.value)");
 	dataList = document.createElement("datalist");
 	dataList.setAttribute("id", "tempList");
 	for(let index in arrTemp) {
@@ -65,42 +66,78 @@ function Form(arrCity, arrTemp) {
 	document.getElementById("app").appendChild(newForm);
 }
 
+function SliderForWeather() {
+	let newWeatherSlider;
+	let a;
+
+	newWeatherSlider = document.createElement("div");
+	newWeatherSlider.setAttribute("id", "weatherSliderBlock");
+	a = document.createElement("a");
+	a.setAttribute("class", "prev");
+	a.setAttribute("onclick", "plusSlides(-1)");
+	newWeatherSlider.appendChild(a);
+	a = document.createElement("a");
+	a.setAttribute("class", "next");
+	a.setAttribute("onclick", "plusSlides(1)");
+	newWeatherSlider.appendChild(a);
+
+
+	document.getElementById("app").appendChild(newWeatherSlider);
+}
+
 function WeatherForecast() {
 	let formsBlock;
 	let sliderBlock;
 
 	formsBlock = new Form(cities, temperatures);
 
-	sliderBlock = document.createElement("div");
-	sliderBlock.setAttribute("id", "sliderBlock");
-	document.getElementById("app").appendChild(sliderBlock);
-
-	sliderBlock.innerHTML = "Slider block"; // to do
+	sliderBlock = new SliderForWeather();
 };
 
 function app() {
+	let wf;
+
 	start = document.createElement("section");
 	start.setAttribute("id", "app");
 	document.body.appendChild(start);
 	wf = new WeatherForecast();
+	loadData();
 };
 
-function loadData(city) {
-	console.log("Data about "+city+" has loaded");
+function loadData(city = cities[0]) {
 	let xhttp = new XMLHttpRequest();
+	let unit = units[document.getElementById("formSlider").value];
+
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			document.getElementById("sliderBlock").innerHTML = "Data has been loading!";
+			console.log("Data has been loading!");
+			//document.getElementById("weatherSliderBlock").innerHTML = "Data has been loading!";
 			showWeatherSlider(this);
 		} else {
-			document.getElementById("sliderBlock").innerHTML = "It has been loading!!!";
+			//document.getElementById("weatherSliderBlock").innerHTML = "It has been loading!!!";
 		}
 	};
-	xhttp.open("GET", "http://api.openweathermap.org/data/2.5/weather?q="+city+"&units=imperial&appid="+apiKey+"&cnt=3", true);
+	xhttp.open("GET", "http://api.openweathermap.org/data/2.5/forecast?q="+city+"&appid="+apiKey+"&units="+unit, true);
 	xhttp.send();
+}
+
+function changeTemperature(typeTemper) {  // to do
+	switch(Number(typeTemper)) {
+		case 0: 
+			console.log('0');
+			break;
+		case 1: 
+			console.log('1');
+			break;
+	}
 }
 
 function showWeatherSlider(xhttp) {
 	console.log(JSON.parse(xhttp.responseText));
-	document.getElementById("sliderBlock").innerHTML = xhttp.responseText;
+	//document.getElementById("weatherSliderBlock").innerHTML = xhttp.responseText;
+}
+
+function plusSlides(n) {
+	console.log("plusSlides is working!")
+	showSlides(slideIndex += n);
 }
