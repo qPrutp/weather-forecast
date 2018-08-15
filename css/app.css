@@ -68,9 +68,77 @@ section > form {
 /* Slider For Weather */
 #weatherSliderBlock {
 	max-width: 100%;
+	height: 400px;
 	position: relative;
 	margin: auto;
 	border: 1px solid black;
+}
+
+.element-slider {
+	width: 25%;
+	display: inline-block;
+	margin: 25px 0 0 6%;
+}
+
+.element-slider > table {
+	width: 100%;
+}
+
+table {
+	background: white;
+}
+
+table td:first-child {
+	width: 34%;
+}
+
+table td:last-child > img {
+	float: right;
+}
+
+td > p {
+	margin: 0 0 4px 0;
+}
+
+p > i {
+	margin: 0 0 0 7px;
+}
+
+.night {
+	display: inline-block;
+    min-width: 54px;
+	background-color: #999;
+	color: #fff;
+	border-radius: .25em;
+	font-size: 75%;
+	font-weight: 700;
+	padding: 3px 5px;
+	text-align: center;
+}
+
+.day {
+	display: inline-block;
+    min-width: 54px;
+	background-color: #f0ad4e;
+	color: #fff;
+	border-radius: .25em;
+	font-size: 75%;
+	font-weight: 700;
+	padding: 3px 5px;
+	text-align: center;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+tr {
+	border-style: none none solid none;
+}
+
+tr:last-child {
+	border-style: none none none none;
 }
 
 /* Next & previous buttons */

@@ -1,4 +1,5 @@
 let start;
+let curent = 3;
 const cities = ["Lviv", "Kyiv", "London", "New York"];
 const temperatures = ["C", "F"];
 const apiKey = "5140914bfb0847d1752cd225b5311a51";
@@ -66,21 +67,36 @@ function Form(arrCity, arrTemp) {
 	document.getElementById("app").appendChild(newForm);
 }
 
-function SliderForWeather() {
+function SliderForWeather(n) {
 	let newWeatherSlider;
-	let a;
+	let a, b;
+	let conten;
+	let elementForSlider;
 
 	newWeatherSlider = document.createElement("div");
 	newWeatherSlider.setAttribute("id", "weatherSliderBlock");
 	a = document.createElement("a");
 	a.setAttribute("class", "prev");
 	a.setAttribute("onclick", "plusSlides(-1)");
+	conten = document.createTextNode("❮");
+	a.appendChild(conten);
 	newWeatherSlider.appendChild(a);
 	a = document.createElement("a");
 	a.setAttribute("class", "next");
 	a.setAttribute("onclick", "plusSlides(1)");
+	conten = document.createTextNode("❯");
+	a.appendChild(conten);
 	newWeatherSlider.appendChild(a);
 
+	for (let i = 0; i < 5; i++) {
+		elementForSlider = document.createElement("div");
+		elementForSlider.setAttribute("class", "element-slider");
+		if ((n == 3) && (i > 2)) {
+			elementForSlider.style.display = "none";
+		}
+
+		newWeatherSlider.appendChild(elementForSlider);
+	}
 
 	document.getElementById("app").appendChild(newWeatherSlider);
 }
@@ -91,7 +107,7 @@ function WeatherForecast() {
 
 	formsBlock = new Form(cities, temperatures);
 
-	sliderBlock = new SliderForWeather();
+	sliderBlock = new SliderForWeather(3);
 };
 
 function app() {
@@ -110,11 +126,24 @@ function loadData(city = cities[0]) {
 
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			console.log("Data has been loading!");
-			//document.getElementById("weatherSliderBlock").innerHTML = "Data has been loading!";
-			showWeatherSlider(this);
+			let content = JSON.parse(xhttp.responseText);
+			let blocks = document.getElementsByClassName("element-slider");
+
+			for (let i = 0; i < 5; i++) {
+				let day = [];	
+				let tempDate = new Date();
+				tempDate.setDate(tempDate.getDate() + i);
+				tempDate = tempDate.toISOString().slice(0,10);
+				for (let index in content.list){
+					if (content.list[index].dt_txt.substr(0, 10) == tempDate) {
+						day.push(content.list[index]);
+					}
+				}
+				addContent(day, i);
+				
+			}
 		} else {
-			//document.getElementById("weatherSliderBlock").innerHTML = "It has been loading!!!";
+			// document.getElementById("weatherSliderBlock").innerHTML = "It has been loading!!!";
 		}
 	};
 	xhttp.open("GET", "http://api.openweathermap.org/data/2.5/forecast?q="+city+"&appid="+apiKey+"&units="+unit, true);
@@ -128,16 +157,141 @@ function changeTemperature(typeTemper) {  // to do
 			break;
 		case 1: 
 			console.log('1');
+			console.log("night[0]: "+document.getElementsByClassName("night")[0].innerText);
 			break;
 	}
 }
 
-function showWeatherSlider(xhttp) {
-	console.log(JSON.parse(xhttp.responseText));
-	//document.getElementById("weatherSliderBlock").innerHTML = xhttp.responseText;
+function addContent(day, i) {
+	let week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+	let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	let tempDate = new Date();
+	tempDate.setDate(tempDate.getDate() + i);
+	let blocks = document.getElementsByClassName("element-slider");
+	let table;
+	let tr;
+	let td;
+	let img;
+	let tempText;
+	let iTeg;
+	let p;
+	let span;
+	let sup;
+
+	table = document.createElement("table");
+	tr = document.createElement("tr");
+	td = document.createElement("td");
+	tempText = document.createTextNode(months[tempDate.getMonth()]+" "+tempDate.getDate()+" "+week[tempDate.getDay()]);
+	td.appendChild(tempText);
+	tr.appendChild(td);
+	td = document.createElement("td");
+	img = document.createElement("img");
+	img.setAttribute("alt", "forecast");
+	img.setAttribute("src", "../weatherForecast/img/04n.png"); //to do
+	td.appendChild(img);
+	tr.appendChild(td);
+	table.appendChild(tr);
+
+	if (day.length < 7) {
+		console.log('add night');
+		tr = document.createElement("tr");
+		tr.setAttribute("height", "59px");
+		td = document.createElement("td");
+		tr.appendChild(td);
+		td = document.createElement("td");
+		tr.appendChild(td);
+		table.appendChild(tr);
+	} if (day.length < 6) {
+		console.log('add morning');
+		tr = document.createElement("tr");
+		tr.setAttribute("height", "59px");
+		td = document.createElement("td");
+		tr.appendChild(td);
+		td = document.createElement("td");
+		tr.appendChild(td);
+		table.appendChild(tr);
+	} if (day.length < 4) {
+		console.log('add day');
+		tr = document.createElement("tr");
+		tr.setAttribute("height", "59px");
+		td = document.createElement("td");
+		tr.appendChild(td);
+		td = document.createElement("td");
+		tr.appendChild(td);
+		table.appendChild(tr);
+	}
+
+	for (let index = 0; index < day.length; index++) {
+		console.log(day.length);
+		if ((day[index].dt_txt.slice(11) == "03:00:00") ||
+			(day[index].dt_txt.slice(11) == "06:00:00") ||
+			(day[index].dt_txt.slice(11) == "12:00:00") ||
+			(day[index].dt_txt.slice(11) == "21:00:00")) {
+			tr = document.createElement("tr");
+			td = document.createElement("td");
+			img = document.createElement("img");
+			img.setAttribute("alt", "forecast");
+			img.setAttribute("src", "../weatherForecast/img/04n.png"); //to do
+			td.appendChild(img);
+			tr.appendChild(td);
+
+			td = document.createElement("td");
+			p = document.createElement("p");
+			span = document.createElement("span");
+			if (day[index].dt_txt.slice(11) == "03:00:00") {
+				span.setAttribute("class", "night");
+			} else {
+				span.setAttribute("class", "day");
+			}
+			tempText = document.createTextNode(day[index].main.temp);+sup+(document.getElementById("formSlider").value == 0 ? "C" : "F")
+			span.appendChild(tempText);
+			sup = document.createElement("sup");
+			sup.innerHTML = " o";
+			span.appendChild(sup);
+			tempText = document.createTextNode(document.getElementById("formSlider").value == 0 ? "C" : "F");
+			span.appendChild(tempText);
+			p.appendChild(span);
+			tempText = document.createTextNode(" "+day[index].wind.speed+" m/s");
+			p.appendChild(tempText);
+			td.appendChild(p);
+			iTeg = document.createElement("i");
+			tempText = document.createTextNode(day[index].weather[0].description);
+			iTeg.appendChild(tempText);
+			td.appendChild(iTeg);
+			tr.appendChild(td);
+
+			table.appendChild(tr);
+			// console.log(day[index]);
+		}
+	}
+
+	blocks[i].appendChild(table);
 }
 
 function plusSlides(n) {
-	console.log("plusSlides is working!")
-	showSlides(slideIndex += n);
+	showSliderBlock(curent += n);
+}
+
+function showSliderBlock(n) {
+	let blocks = document.getElementsByClassName("element-slider");
+	if (n > blocks.length) {curent = 3;}
+	if (n < 3) {curent = 5;}
+	if(curent == 3) {
+		blocks[0].style.display = "inline-block";
+		blocks[1].style.display = "inline-block";
+		blocks[3].style.display = "none";
+		blocks[4].style.display = "none";
+	}
+	if(curent == 4) {
+		blocks[0].style.display = "none";
+		blocks[1].style.display = "inline-block";
+		blocks[3].style.display = "inline-block";
+		blocks[4].style.display = "none";
+	}
+	if(curent == 5) {
+		blocks[0].style.display = "none";
+		blocks[1].style.display = "none";
+		blocks[3].style.display = "inline-block";
+		blocks[4].style.display = "inline-block";
+	}
 }
