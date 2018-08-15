@@ -153,7 +153,7 @@ function loadData(city = cities[0]) {
 			// document.getElementById("weatherSliderBlock").innerHTML = "It has been loading!!!";
 		}
 	};
-	xhttp.open("GET", "http://api.openweathermap.org/data/2.5/forecast?q="+city+"&appid="+apiKey+"&units="+unit, true);
+	xhttp.open("GET", "https://api.openweathermap.org/data/2.5/forecast?q="+city+"&appid="+apiKey+"&units="+unit, true);
 	xhttp.send();
 }
 
