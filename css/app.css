@@ -96,6 +96,10 @@ table td:last-child > img {
 	float: right;
 }
 
+tr {
+	height: 59px;
+}
+
 td > p {
 	margin: 0 0 4px 0;
 }

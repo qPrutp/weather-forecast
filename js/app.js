@@ -1,9 +1,10 @@
 let start;
 let curent = 3;
-const cities = ["Lviv", "Kyiv", "London", "New York"];
+const cities = ["Lviv", "Kyiv", "London", "New York", "Vinnytsia"];
 const temperatures = ["C", "F"];
 const apiKey = "5140914bfb0847d1752cd225b5311a51";
 const units = ["metric", "imperial"];
+const imgWay = "../weatherForecast/img/";
 
 function Form(arrCity, arrTemp) {
 	let newForm;
@@ -216,6 +217,7 @@ function addContent(day, i) {
 	let p;
 	let span;
 	let sup;
+	console.log(day[0]);
 
 	table = document.createElement("table");
 	tr = document.createElement("tr");
@@ -226,14 +228,13 @@ function addContent(day, i) {
 	td = document.createElement("td");
 	img = document.createElement("img");
 	img.setAttribute("alt", "forecast");
-	img.setAttribute("src", "../weatherForecast/img/04n.png"); //to do
+	img.setAttribute("src", imgWay+"04n.png"); //to do
 	td.appendChild(img);
 	tr.appendChild(td);
 	table.appendChild(tr);
 
 	if (day.length < 7) {
 		tr = document.createElement("tr");
-		tr.setAttribute("height", "59px");
 		td = document.createElement("td");
 		tr.appendChild(td);
 		td = document.createElement("td");
@@ -241,7 +242,6 @@ function addContent(day, i) {
 		table.appendChild(tr);
 	} if (day.length < 6) {
 		tr = document.createElement("tr");
-		tr.setAttribute("height", "59px");
 		td = document.createElement("td");
 		tr.appendChild(td);
 		td = document.createElement("td");
@@ -249,7 +249,6 @@ function addContent(day, i) {
 		table.appendChild(tr);
 	} if (day.length < 4) {
 		tr = document.createElement("tr");
-		tr.setAttribute("height", "59px");
 		td = document.createElement("td");
 		tr.appendChild(td);
 		td = document.createElement("td");
@@ -266,7 +265,7 @@ function addContent(day, i) {
 			td = document.createElement("td");
 			img = document.createElement("img");
 			img.setAttribute("alt", "forecast");
-			img.setAttribute("src", "../weatherForecast/img/04n.png"); //to do
+			img.setAttribute("src", imgWay+day[index].weather[0].icon+".png");
 			td.appendChild(img);
 			tr.appendChild(td);
 
