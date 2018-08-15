@@ -128,6 +128,13 @@ function loadData(city = cities[0]) {
 		if (this.readyState == 4 && this.status == 200) {
 			let content = JSON.parse(xhttp.responseText);
 			let blocks = document.getElementsByClassName("element-slider");
+			let tables = document.getElementsByTagName("table");
+
+			for (let i = 0; i < blocks.length; i++) {
+				if (tables[i]) {
+					blocks[i].removeChild(blocks[i].firstChild);
+				}
+			}
 
 			for (let i = 0; i < 5; i++) {
 				let day = [];	
@@ -150,14 +157,46 @@ function loadData(city = cities[0]) {
 	xhttp.send();
 }
 
-function changeTemperature(typeTemper) {  // to do
+function changeTemperature(typeTemper) {
+	let spanNughts;
+	let spatDays;
+	let temperature;
+
+	spanNughts = document.getElementsByClassName("night");
+	spatDays = document.getElementsByClassName("day");
+
 	switch(Number(typeTemper)) {
 		case 0: 
-			console.log('0');
+			for(let i = 0; i < spanNughts.length; i++) {
+				temperature = 0;
+				temperature = spanNughts[i].innerHTML.substring(0,spanNughts[i].innerHTML.indexOf("<"));
+				spanNughts[i].innerHTML = ((temperature - 32) / 1.8).toFixed(2)
+										+ spanNughts[i].innerHTML.substring(spanNughts[i].innerHTML.indexOf("<"), spatDays[i].innerHTML.indexOf("F"))
+										+ "C";
+			}
+			for(let i = 0; i < spatDays.length; i++) {
+				temperature = 0;
+				temperature = spatDays[i].innerHTML.substring(0,spatDays[i].innerHTML.indexOf("<"));
+				spatDays[i].innerHTML = ((temperature - 32) / 1.8).toFixed(2)
+										+ spatDays[i].innerHTML.substring(spatDays[i].innerHTML.indexOf("<"), spatDays[i].innerHTML.indexOf("F"))
+										+ "C";
+			}
 			break;
-		case 1: 
-			console.log('1');
-			console.log("night[0]: "+document.getElementsByClassName("night")[0].innerText);
+		case 1:
+			for(let i = 0; i < spanNughts.length; i++) {
+				temperature = 0;
+				temperature = spanNughts[i].innerHTML.substring(0,spanNughts[i].innerHTML.indexOf("<"));
+				spanNughts[i].innerHTML = (temperature * 1.8 + 32).toFixed(2)
+										+ spanNughts[i].innerHTML.substring(spanNughts[i].innerHTML.indexOf("<"), spatDays[i].innerHTML.indexOf("C"))
+										+ "F";
+			}
+			for(let i = 0; i < spatDays.length; i++) {
+				temperature = 0;
+				temperature = spatDays[i].innerHTML.substring(0,spatDays[i].innerHTML.indexOf("<"));
+				spatDays[i].innerHTML = (temperature * 1.8 + 32).toFixed(2)
+										+ spatDays[i].innerHTML.substring(spatDays[i].innerHTML.indexOf("<"), spatDays[i].innerHTML.indexOf("C"))
+										+ "F";
+			}
 			break;
 	}
 }
@@ -193,7 +232,6 @@ function addContent(day, i) {
 	table.appendChild(tr);
 
 	if (day.length < 7) {
-		console.log('add night');
 		tr = document.createElement("tr");
 		tr.setAttribute("height", "59px");
 		td = document.createElement("td");
@@ -202,7 +240,6 @@ function addContent(day, i) {
 		tr.appendChild(td);
 		table.appendChild(tr);
 	} if (day.length < 6) {
-		console.log('add morning');
 		tr = document.createElement("tr");
 		tr.setAttribute("height", "59px");
 		td = document.createElement("td");
@@ -211,7 +248,6 @@ function addContent(day, i) {
 		tr.appendChild(td);
 		table.appendChild(tr);
 	} if (day.length < 4) {
-		console.log('add day');
 		tr = document.createElement("tr");
 		tr.setAttribute("height", "59px");
 		td = document.createElement("td");
@@ -222,7 +258,6 @@ function addContent(day, i) {
 	}
 
 	for (let index = 0; index < day.length; index++) {
-		console.log(day.length);
 		if ((day[index].dt_txt.slice(11) == "03:00:00") ||
 			(day[index].dt_txt.slice(11) == "06:00:00") ||
 			(day[index].dt_txt.slice(11) == "12:00:00") ||
