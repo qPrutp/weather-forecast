@@ -217,7 +217,7 @@ function addContent(day, i) {
 	let p;
 	let span;
 	let sup;
-	console.log(day[0]);
+	console.log(day);
 
 	table = document.createElement("table");
 	tr = document.createElement("tr");
@@ -228,7 +228,7 @@ function addContent(day, i) {
 	td = document.createElement("td");
 	img = document.createElement("img");
 	img.setAttribute("alt", "forecast");
-	img.setAttribute("src", imgWay+"04n.png"); //to do
+	img.setAttribute("src", imgWay+day[0].weather[0].icon.substr(0, 2)+"d.png");
 	td.appendChild(img);
 	tr.appendChild(td);
 	table.appendChild(tr);
