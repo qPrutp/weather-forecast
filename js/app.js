@@ -217,7 +217,6 @@ function addContent(day, i) {
 	let p;
 	let span;
 	let sup;
-	console.log(day);
 
 	table = document.createElement("table");
 	tr = document.createElement("tr");
@@ -295,7 +294,6 @@ function addContent(day, i) {
 			tr.appendChild(td);
 
 			table.appendChild(tr);
-			// console.log(day[index]);
 		}
 	}
 
@@ -307,24 +305,28 @@ function plusSlides(n) {
 }
 
 function showSliderBlock(n) {
+	console.log('showSliderBlock: '+n);
 	let blocks = document.getElementsByClassName("element-slider");
 	if (n > blocks.length) {curent = 3;}
 	if (n < 3) {curent = 5;}
 	if(curent == 3) {
 		blocks[0].style.display = "inline-block";
 		blocks[1].style.display = "inline-block";
+		blocks[2].style.display = "inline-block";
 		blocks[3].style.display = "none";
 		blocks[4].style.display = "none";
 	}
 	if(curent == 4) {
 		blocks[0].style.display = "none";
 		blocks[1].style.display = "inline-block";
+		blocks[2].style.display = "inline-block";
 		blocks[3].style.display = "inline-block";
 		blocks[4].style.display = "none";
 	}
 	if(curent == 5) {
 		blocks[0].style.display = "none";
 		blocks[1].style.display = "none";
+		blocks[2].style.display = "inline-block";
 		blocks[3].style.display = "inline-block";
 		blocks[4].style.display = "inline-block";
 	}
