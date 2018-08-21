@@ -16,6 +16,7 @@ function Form(arrCity, arrTemp) {
 
 	newSelect = document.createElement("select");
 	newSelect.setAttribute("onchange", "loadData(this.value)");
+	newSelect.style.background = "#0000ff14";
 
 	for(let index in arrCity) {
 		newOption = document.createElement("option");
@@ -118,10 +119,11 @@ function app() {
 	start.setAttribute("id", "app");
 	document.body.appendChild(start);
 	wf = new WeatherForecast();
-	loadData();
+	console.log(document.getElementsByTagName("select").innerText);
+	loadData(cities[0]);
 };
 
-function loadData(city = cities[0]) {
+function loadData(city) {
 	let xhttp = new XMLHttpRequest();
 	let unit = units[document.getElementById("formSlider").value];
 
@@ -129,10 +131,11 @@ function loadData(city = cities[0]) {
 		if (this.readyState == 4 && this.status == 200) {
 			let content = JSON.parse(xhttp.responseText);
 			let blocks = document.getElementsByClassName("element-slider");
-			let tables = document.getElementsByTagName("table");
+			let backgroundApp = document.getElementById("app");
+			backgroundApp.style.backgroundImage = "url('../weatherForecast/img/0002.jpg')";
 
 			for (let i = 0; i < blocks.length; i++) {
-				if (tables[i]) {
+				if (blocks[i].firstChild) {
 					blocks[i].removeChild(blocks[i].firstChild);
 				}
 			}
