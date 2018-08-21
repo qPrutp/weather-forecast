@@ -1,9 +1,10 @@
 let start;
 let curent = 3;
-const cities = ["Lviv", "Kyiv", "London", "New York"];
+const cities = ["Lviv", "Kyiv", "London", "New York", "Vinnytsia"];
 const temperatures = ["C", "F"];
 const apiKey = "5140914bfb0847d1752cd225b5311a51";
 const units = ["metric", "imperial"];
+const imgWay = "../weatherForecast/img/";
 
 function Form(arrCity, arrTemp) {
 	let newForm;
@@ -15,6 +16,7 @@ function Form(arrCity, arrTemp) {
 
 	newSelect = document.createElement("select");
 	newSelect.setAttribute("onchange", "loadData(this.value)");
+	newSelect.style.background = "#0000ff14";
 
 	for(let index in arrCity) {
 		newOption = document.createElement("option");
@@ -117,10 +119,11 @@ function app() {
 	start.setAttribute("id", "app");
 	document.body.appendChild(start);
 	wf = new WeatherForecast();
-	loadData();
+	console.log(document.getElementsByTagName("select").innerText);
+	loadData(cities[0]);
 };
 
-function loadData(city = cities[0]) {
+function loadData(city) {
 	let xhttp = new XMLHttpRequest();
 	let unit = units[document.getElementById("formSlider").value];
 
@@ -128,10 +131,11 @@ function loadData(city = cities[0]) {
 		if (this.readyState == 4 && this.status == 200) {
 			let content = JSON.parse(xhttp.responseText);
 			let blocks = document.getElementsByClassName("element-slider");
-			let tables = document.getElementsByTagName("table");
+			let backgroundApp = document.getElementById("app");
+			backgroundApp.style.backgroundImage = "url('../weatherForecast/img/0002.jpg')";
 
 			for (let i = 0; i < blocks.length; i++) {
-				if (tables[i]) {
+				if (blocks[i].firstChild) {
 					blocks[i].removeChild(blocks[i].firstChild);
 				}
 			}
@@ -226,14 +230,13 @@ function addContent(day, i) {
 	td = document.createElement("td");
 	img = document.createElement("img");
 	img.setAttribute("alt", "forecast");
-	img.setAttribute("src", "../weatherForecast/img/04n.png"); //to do
+	img.setAttribute("src", imgWay+day[0].weather[0].icon.substr(0, 2)+"d.png");
 	td.appendChild(img);
 	tr.appendChild(td);
 	table.appendChild(tr);
 
 	if (day.length < 7) {
 		tr = document.createElement("tr");
-		tr.setAttribute("height", "59px");
 		td = document.createElement("td");
 		tr.appendChild(td);
 		td = document.createElement("td");
@@ -241,7 +244,6 @@ function addContent(day, i) {
 		table.appendChild(tr);
 	} if (day.length < 6) {
 		tr = document.createElement("tr");
-		tr.setAttribute("height", "59px");
 		td = document.createElement("td");
 		tr.appendChild(td);
 		td = document.createElement("td");
@@ -249,7 +251,6 @@ function addContent(day, i) {
 		table.appendChild(tr);
 	} if (day.length < 4) {
 		tr = document.createElement("tr");
-		tr.setAttribute("height", "59px");
 		td = document.createElement("td");
 		tr.appendChild(td);
 		td = document.createElement("td");
@@ -266,7 +267,7 @@ function addContent(day, i) {
 			td = document.createElement("td");
 			img = document.createElement("img");
 			img.setAttribute("alt", "forecast");
-			img.setAttribute("src", "../weatherForecast/img/04n.png"); //to do
+			img.setAttribute("src", imgWay+day[index].weather[0].icon+".png");
 			td.appendChild(img);
 			tr.appendChild(td);
 
@@ -296,7 +297,6 @@ function addContent(day, i) {
 			tr.appendChild(td);
 
 			table.appendChild(tr);
-			// console.log(day[index]);
 		}
 	}
 
@@ -308,24 +308,28 @@ function plusSlides(n) {
 }
 
 function showSliderBlock(n) {
+	console.log('showSliderBlock: '+n);
 	let blocks = document.getElementsByClassName("element-slider");
 	if (n > blocks.length) {curent = 3;}
 	if (n < 3) {curent = 5;}
 	if(curent == 3) {
 		blocks[0].style.display = "inline-block";
 		blocks[1].style.display = "inline-block";
+		blocks[2].style.display = "inline-block";
 		blocks[3].style.display = "none";
 		blocks[4].style.display = "none";
 	}
 	if(curent == 4) {
 		blocks[0].style.display = "none";
 		blocks[1].style.display = "inline-block";
+		blocks[2].style.display = "inline-block";
 		blocks[3].style.display = "inline-block";
 		blocks[4].style.display = "none";
 	}
 	if(curent == 5) {
 		blocks[0].style.display = "none";
 		blocks[1].style.display = "none";
+		blocks[2].style.display = "inline-block";
 		blocks[3].style.display = "inline-block";
 		blocks[4].style.display = "inline-block";
 	}
