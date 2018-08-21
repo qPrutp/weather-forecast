@@ -4,7 +4,7 @@ const cities = ["Lviv", "Kyiv", "London", "New York", "Vinnytsia"];
 const temperatures = ["C", "F"];
 const apiKey = "5140914bfb0847d1752cd225b5311a51";
 const units = ["metric", "imperial"];
-const imgWay = "../weatherForecast/img/";
+const imgWay = "../weather-forecast/img/";
 
 function Form(arrCity, arrTemp) {
 	let newForm;
@@ -132,7 +132,7 @@ function loadData(city) {
 			let content = JSON.parse(xhttp.responseText);
 			let blocks = document.getElementsByClassName("element-slider");
 			let backgroundApp = document.getElementById("app");
-			backgroundApp.style.backgroundImage = "url('../weatherForecast/img/0002.jpg')";
+			backgroundApp.style.backgroundImage = "url('../weather-forecast/img/0002.jpg')";
 
 			for (let i = 0; i < blocks.length; i++) {
 				if (blocks[i].firstChild) {
