@@ -119,7 +119,6 @@ function app() {
 	start.setAttribute("id", "app");
 	document.body.appendChild(start);
 	wf = new WeatherForecast();
-	console.log(document.getElementsByTagName("select").innerText);
 	loadData(cities[0]);
 };
 
@@ -308,7 +307,6 @@ function plusSlides(n) {
 }
 
 function showSliderBlock(n) {
-	console.log('showSliderBlock: '+n);
 	let blocks = document.getElementsByClassName("element-slider");
 	if (n > blocks.length) {curent = 3;}
 	if (n < 3) {curent = 5;}
