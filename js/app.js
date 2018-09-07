@@ -108,7 +108,6 @@ function WeatherForecast() {
 	let sliderBlock;
 
 	formsBlock = new Form(cities, temperatures);
-
 	sliderBlock = new SliderForWeather(3);
 };
 
